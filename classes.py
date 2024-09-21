@@ -4,16 +4,51 @@ filename = "data.json"
 
 #-----------------------------------------------
 
-def save_to_json(data):
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+class JsonHandler:
 
-def load_from_json():
-    try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {"movies": [], "tvseries": []}
+    def save_to_json(data) -> None:
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+            print("Данные успешно сохранены")
+        pass
+
+    def load_from_json() -> dict:
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return {"movies": [], "tvseries": []}
+
+    def print_data(data):
+        print("\nДанные из JSON:")
+    
+        print("\nФильмы:")
+        for movie in data['movies']:
+            print(f"Название: {movie['title']}, Длительность: {movie['duration']} мин, Рейтинг: {movie['rating']}")
+
+        print("\nСериалы:")
+        for series in data['serials']:
+            print(f"Название: {series['title']}, Эпизодов: {series['num_of_ep']}, Рейтинг: {series['rating']}")
+
+    def data_to_dict(data) -> dict:
+
+        while True:
+            choice = int(input("Что записать в массив?\n1-Фильмы\n2-Сериалы\n"))
+            if choice == 1:
+                res = []
+                for movie in data['movies']:
+                    res.append(movie)
+                print("Данные успешно сохранены в массив \n")
+                return res
+            elif choice == 2:
+                res = []
+                for movie in data['serials']:
+                    res.append(movie)
+                print("Данные успешно сохранены в массив \n")
+                return res
+            else:
+                print("Неверный выбор")
+
 
 #-----------------------------------------------
 
