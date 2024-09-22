@@ -1,6 +1,53 @@
 import json 
+import xml.etree.ElementTree as et
 
+filenamexml = "data.xml"
 filenamejson = "data.json"
+
+#-----------------------------------------------
+
+class XmlHandler:
+
+    def indent(elem, level = 0):
+        i = "\n" + level * "  "
+        if len(elem):
+            if not elem.text or not elem.text.strip():
+                elem.text = i + "  "
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+            for subelem in elem:
+                XmlHandler.indent(subelem, level + 1)
+            if not subelem.tail or not subelem.tail.strip():
+                subelem.tail = i
+        else:
+            if level and (not elem.tail or not elem.tail.strip()):
+                elem.tail = i
+
+    def save_to_xml(data) -> None:
+        root = et.Element('data')
+
+        movies = et.SubElement(root, 'movies')
+        for movie in data['movies']:
+            movie_element = et.SubElement(movies, 'movie')
+            for key, value in movie.items():
+                child = et.SubElement(movie_element, key)
+                child.text = str(value)  
+
+        tvseries = et.SubElement(root, 'tvseries')
+        for series in data['tvseries']:
+            series_element = et.SubElement(tvseries, 'series')
+            for key, value in series.items():
+                child = et.SubElement(series_element, key)
+                child.text = str(value)  
+
+        # Добавляем отступы для красивого форматирования
+        XmlHandler.indent(root)
+
+        # Создаем дерево XML и записываем его в файл
+        tree = et.ElementTree(root)
+        tree.write(filenamexml, encoding='utf-8', xml_declaration=True)
+
+        print(f"Данные успешно сохранены в файл '{filenamexml}'")
 
 #-----------------------------------------------
 
