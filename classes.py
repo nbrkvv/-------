@@ -1,20 +1,20 @@
 import json 
 
-filename = "data.json"
+filenamejson = "data.json"
 
 #-----------------------------------------------
 
 class JsonHandler:
 
     def save_to_json(data) -> None:
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open(filenamejson, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
             print("Данные успешно сохранены")
         pass
 
     def load_from_json() -> dict:
         try:
-            with open(filename, 'r', encoding='utf-8') as f:
+            with open(filenamejson, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except FileNotFoundError:
             return {"movies": [], "tvseries": []}

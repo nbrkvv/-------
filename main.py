@@ -62,7 +62,6 @@ while True:
     elif choice == 5:
         #вывести json
         cl.JsonHandler.print_data(data)
-        print()
         break
     elif choice == 6:
         #вывести xml
