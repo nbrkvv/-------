@@ -172,15 +172,25 @@ class JsonHandler:
 
 #-----------------------------------------------
 
-class Serial:
+class Media:
+    title = ""
+    rating = 0
+
+    def __init__(self, inp_title = "", inp_rating = 0) -> None:
+        self.title = inp_title
+        self.rating = inp_rating
+        pass
+
+#-----------------------------------------------
+
+class Serial(Media):
     title = ""
     num_of_ep = 0
     rating = 0
 
     def __init__(self, inp_title = "", inp_num_of_ep = 0, inp_rating = 0) -> None:
-        self.title = inp_title
+        super().__init__(inp_title, inp_rating)
         self.num_of_ep = inp_num_of_ep
-        self.rating = inp_rating
         pass
 
     def set_title(self) -> None:
@@ -234,15 +244,14 @@ class Serial:
 
 #-----------------------------------------------
 
-class Film:
+class Film(Media):
     title = ""
     duration = 0
     rating = 0
 
     def __init__(self, inp_title = "", inp_duratoin = 0, inp_rating = 0) -> None:
-        self.title = inp_title
+        super().__init__(inp_title, inp_rating)
         self.duration = inp_duratoin
-        self.rating = inp_rating
         pass
 
     def set_title(self) -> None:
