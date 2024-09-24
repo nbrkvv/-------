@@ -21,7 +21,8 @@ while True:
                 cl.JsonHandler.save_to_json(data)
                 break
             elif xoj == 2:
-                #Дописать xml
+                data['movies'].append(film.to_dict())
+                cl.XmlHandler.save_to_xml(data)
                 print()
                 break
             else:
@@ -43,7 +44,8 @@ while True:
                 cl.JsonHandler.save_to_json(data)
                 break
             elif xoj == 2:
-                #Дописать xml
+                data['serials'].append(serial.to_dict())
+                cl.XmlHandler.save_to_xml(data)
                 print()
                 break
             else:
@@ -57,6 +59,7 @@ while True:
         break
     elif choice == 4:
         #xml в массив
+        res = cl.XmlHandler.data_to_dict(data)
         print()
         break
     elif choice == 5:
@@ -65,6 +68,7 @@ while True:
         break
     elif choice == 6:
         #вывести xml
+        cl.XmlHandler.print_data(data)
         print()
         break
     else:

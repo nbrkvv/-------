@@ -1,6 +1,8 @@
 import json 
 import xml.etree.ElementTree as et
 
+#-----------------------------------------------
+
 filenamexml = "data.xml"
 filenamejson = "data.json"
 
@@ -8,7 +10,8 @@ filenamejson = "data.json"
 
 class XmlHandler:
 
-    def indent(elem, level = 0):
+    # Функция для красивых отступов 
+    def indent(elem, level = 0) -> None:
         i = "\n" + level * "  "
         if len(elem):
             if not elem.text or not elem.text.strip():
@@ -22,7 +25,9 @@ class XmlHandler:
         else:
             if level and (not elem.tail or not elem.tail.strip()):
                 elem.tail = i
+        pass
 
+    # Функция сохранения информации в xml
     def save_to_xml(data) -> None:
         root = et.Element('data')
 
@@ -48,17 +53,80 @@ class XmlHandler:
         tree.write(filenamexml, encoding='utf-8', xml_declaration=True)
 
         print(f"Данные успешно сохранены в файл '{filenamexml}'")
+        pass
+
+    def add_tvseries(data, tvseries):
+        data['tvseries'].append(tvseries.to_dict())
+
+    # Функция чтения информации из xml
+    def load_from_xml() -> dict:
+        try:
+            tree = et.parse(filenamexml)
+            root = tree.getroot()
+        except FileExistsError:
+            return {"movies" : [], "serials" : []}
+        
+        data = {"movies" : [], "serials" : []}
+
+        for movie in root.find("movies"):
+            movie_data = {}
+            for child in movie:
+                movie_data[child.tag] = child.text
+            data["movies"].append(movie_data)
+
+        for serial in root.find("serials"):
+            serial_data = {}
+            for child in serial:
+                serial_data[child.tag] = child.text
+            data["serials"].append(serial_data)
+
+        return data
+    
+    def print_data(data):
+        print("\nДанные из XML:")
+
+        print("\nФильмы:")
+        for movie in data['movies']:
+            print(f"Название: {movie['title']}, Длительность: {movie['duration']} мин, \
+Рейтинг: {movie['rating']}")
+
+        print("\nСериалы:")
+        for series in data['serials']:
+            print(f"Название: {series['title']}, Эпизодов: {series['num_of_ep']}, \
+Рейтинг: {series['rating']}")
+        
+        pass
+
+    def data_to_dict(data) -> dict:
+        while True:
+            choice = int(input("Что записать в массив?\n1-Фильмы\n2-Сериалы\n"))
+            if choice == 1:
+                res = []
+                for movie in data['movies']:
+                    res.append(movie)
+                print("Данные успешно сохранены в массив \n")
+                return res
+            elif choice == 2:
+                res = []
+                for movie in data['serials']:
+                    res.append(movie)
+                print("Данные успешно сохранены в массив \n")
+                return res
+            else:
+                print("Неверный выбор")
 
 #-----------------------------------------------
 
 class JsonHandler:
 
+    # Функция сохранения информации в json
     def save_to_json(data) -> None:
         with open(filenamejson, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
             print("Данные успешно сохранены")
         pass
 
+    # Функция для чения информации из json
     def load_from_json() -> dict:
         try:
             with open(filenamejson, 'r', encoding='utf-8') as f:
@@ -66,19 +134,24 @@ class JsonHandler:
         except FileNotFoundError:
             return {"movies": [], "tvseries": []}
 
-    def print_data(data):
+    # Функция вывода ниформации из json
+    def print_data(data) -> None:
         print("\nДанные из JSON:")
     
         print("\nФильмы:")
         for movie in data['movies']:
-            print(f"Название: {movie['title']}, Длительность: {movie['duration']} мин, Рейтинг: {movie['rating']}")
+            print(f"Название: {movie['title']}, Длительность: {movie['duration']} мин, \
+Рейтинг: {movie['rating']}")
 
         print("\nСериалы:")
         for series in data['serials']:
-            print(f"Название: {series['title']}, Эпизодов: {series['num_of_ep']}, Рейтинг: {series['rating']}")
+            print(f"Название: {series['title']}, Эпизодов: {series['num_of_ep']}, \
+Рейтинг: {series['rating']}")
+        
+        pass
 
+    # Функция записи информации в массив
     def data_to_dict(data) -> dict:
-
         while True:
             choice = int(input("Что записать в массив?\n1-Фильмы\n2-Сериалы\n"))
             if choice == 1:
@@ -221,4 +294,3 @@ class Film:
 
     def __str__(self) -> str:
         return f"Фильм: {self.title}, хронометраж: {self.duration}, рейтинг: {self.rating}"
-
