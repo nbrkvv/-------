@@ -60,7 +60,7 @@ while True:
     elif choice == 4:
         #xml в массив
         res = cl.XmlHandler.data_to_dict(data)
-        print()
+        print(res)
         break
     elif choice == 5:
         #вывести json

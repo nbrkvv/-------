@@ -38,9 +38,9 @@ class XmlHandler:
                 child = et.SubElement(movie_element, key)
                 child.text = str(value)  
 
-        tvseries = et.SubElement(root, 'tvseries')
-        for series in data['tvseries']:
-            series_element = et.SubElement(tvseries, 'series')
+        tvseries = et.SubElement(root, 'serials')
+        for series in data['serials']:
+            series_element = et.SubElement(tvseries, 'serial')
             for key, value in series.items():
                 child = et.SubElement(series_element, key)
                 child.text = str(value)  
@@ -54,9 +54,6 @@ class XmlHandler:
 
         print(f"Данные успешно сохранены в файл '{filenamexml}'")
         pass
-
-    def add_tvseries(data, tvseries):
-        data['tvseries'].append(tvseries.to_dict())
 
     # Функция чтения информации из xml
     def load_from_xml() -> dict:
@@ -132,7 +129,7 @@ class JsonHandler:
             with open(filenamejson, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except FileNotFoundError:
-            return {"movies": [], "tvseries": []}
+            return {"movies": [], "serials": []}
 
     # Функция вывода ниформации из json
     def print_data(data) -> None:
